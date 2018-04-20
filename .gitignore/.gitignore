@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Event Drops Demo</title>
+    <link href="https://fonts.googleapis.com/css?family=Josefin+Sans:300" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Muli" rel="stylesheet">
+    <link href="https://unpkg.com/event-drops/dist/style.css" rel="stylesheet" />
+    <script src="https://unpkg.com/d3"></script>
+    <script src="https://unpkg.com/event-drops"></script>
+</head>
+
+<body>
+    <h1>Event Drops Demo</h1>
+    <div id="eventdrops-demo" style="width: 90%;"></div>
+    <p class="infos">
+        <span id="numberCommits"></span> commits
+        <span class="light">found between</span>
+        <br />
+        <span id="zoomStart"></span>
+        <span class="light">and</span>
+        <span id="zoomEnd"></span>
+    </p>
+    <footer>
+        <p>
+            Released under MIT license, courtesy of
+            <a href="http://marmelab.com/">marmelab</a>
+            and
+            <a href="https://github.com/canalplus">Canal Plus</a>. More details on our
+            <a href="https://github.com/marmelab/EventDrops">GitHub repository</a>.
+        </p>
+    </footer>
+    <!-- <script>
+           const chart = eventDrops({ d3 });
+    
+            const repositoriesData = [
+                {
+                    name: 'admin-on-rest',
+                    data: [{ date: new Date('2014/09/15 14:21:31') } /* ... */],
+                },
+                {
+                    name: 'event-drops',
+                    data: [{ date: new Date('2014/09/15 13:24:57') } /* ... */],
+                },
+                {
+                    name: 'sedy',
+                    data: [{ date: new Date('2014/09/15 13:25:12') } /* ... */],
+                },
+            ];
+    
+            d3
+                .select('#eventdrops-demo')
+                .data([repositoriesData])
+                .call(chart);
+        </script> -->
+    <script>
+        
+
+        const numberCommitsContainer = document.getElementById('numberCommits');
+        const zoomStart = document.getElementById('zoomStart');
+        const zoomEnd = document.getElementById('zoomEnd');
+
+        const updateCommitsInformation = chart => {
+            const filteredData = chart
+                .filteredData()
+                .reduce((total, repo) => total.concat(repo.data), []);
+
+            numberCommitsContainer.textContent = filteredData.length;
+            zoomStart.textContent = humanizeDate(chart.scale().domain()[0]);
+            zoomEnd.textContent = humanizeDate(chart.scale().domain()[1]);
+        };
+
+        const tooltip = d3
+            .select('body')
+            .append('div')
+            .classed('tooltip', true)
+            .style('opacity', 0)
+            .style('pointer-events', 'auto');
+
+        const chart = eventDrops({ d3 });
+
+        // const chart = eventDrops({
+        //     d3,
+        //     zoom: {
+        //         onZoomEnd: () => updateCommitsInformation(chart),
+        //     },
+        //     drop: {
+        //         date: d => new Date(d.date),
+        //         onMouseOver: commit => {
+        //             tooltip
+        //                 .transition()
+        //                 .duration(200)
+        //                 .style('opacity', 1)
+        //                 .style('pointer-events', 'auto');
+
+        //             tooltip
+        //                 .html(
+        //                 `
+        //             <div class="commit">
+        //             <img class="avatar" src="${gravatar(
+        //                     commit.author.email
+        //                 )}" alt="${commit.author.name}" title="${
+        //                 commit.author.name
+        //                 }" />
+        //             <div class="content">
+        //                 <h3 class="message">${commit.message}</h3>
+        //                 <p>
+        //                     <a href="https://www.github.com/${
+        //                 commit.author.name
+        //                 }" class="author">${commit.author.name}</a>
+        //                     on <span class="date">${humanizeDate(
+        //                     new Date(commit.date)
+        //                 )}</span> -
+        //                     <a class="sha" href="${
+        //                 commit.sha
+        //                 }">${commit.sha.substr(0, 10)}</a>
+        //                 </p>
+        //             </div>
+        //         `
+        //                 )
+        //                 .style('left', `${d3.event.pageX - 30}px`)
+        //                 .style('top', `${d3.event.pageY + 20}px`);
+        //         },
+        //         onMouseOut: () => {
+        //             tooltip
+        //                 .transition()
+        //                 .duration(500)
+        //                 .style('opacity', 0)
+        //                 .style('pointer-events', 'none');
+        //         },
+        //     },
+        // });
+
+        const repositoriesData = [
+                {
+                    name: 'admin-on-rest',
+                    data: [{ date: new Date('2014/09/15 14:21:31') } /* ... */],
+                },
+                {
+                    name: 'event-drops',
+                    data: [{ date: new Date('2014/09/15 13:24:57') } /* ... */],
+                },
+                {
+                    name: 'sedy',
+                    data: [{ date: new Date('2014/09/15 13:25:12') } /* ... */],
+                },
+            ];
+    
+            d3
+                .select('#eventdrops-demo')
+                .data([repositoriesData])
+                .call(chart);
+
+    </script>
+</body>
+
+</html>
